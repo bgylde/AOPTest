@@ -1,5 +1,6 @@
 apply plugin: 'com.android.application'
 apply plugin: 'com.sohu.groovy'
+
 android {
     compileSdkVersion 28
     defaultConfig {
@@ -15,6 +16,10 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
+    }
+    compileOptions {
+        targetCompatibility 1.8
+        sourceCompatibility 1.8
     }
 }
 
