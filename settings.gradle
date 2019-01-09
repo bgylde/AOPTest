@@ -1,1 +1,1 @@
-include ':app', ':sohuGroovy'
+include ':app', ':sohuGroovy', ':agent'

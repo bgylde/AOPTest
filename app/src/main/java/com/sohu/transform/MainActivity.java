@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.util.Log;
 
 import com.sohu.groovytest.Cost;
-//import com.sohu.groovytest.TimeCache;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -13,7 +12,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        //TimeCache.print("123456789");
         groovyTest();
     }
 
