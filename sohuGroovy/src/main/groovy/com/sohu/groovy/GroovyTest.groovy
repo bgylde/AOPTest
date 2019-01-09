@@ -42,12 +42,17 @@ public class GroovyTest extends Transform implements Plugin<Project> {
 
     @Override
     boolean isIncremental() {
-        return false
+        return true         // 开启增量编译
     }
 
     @Override
     void transform(Context context, Collection<TransformInput> inputs, Collection<TransformInput> referencedInputs, TransformOutputProvider outputProvider, boolean isIncremental) throws IOException, TransformException, InterruptedException {
         println('-------------------------- asm visit start --------------------------')
+
+        // 如果非增量，则清空旧的输出内容
+        if (!isIncremental) {
+            outputProvider.deleteAll();
+        }
 
         def startTime = System.currentTimeMillis()
         inputs.each { TransformInput input ->
