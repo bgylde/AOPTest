@@ -15,6 +15,8 @@ import org.objectweb.asm.ClassVisitor
 
 import org.objectweb.asm.Opcodes
 
+import com.sohu.groovy.CostClassVisitor
+
 public class GroovyTest extends Transform implements Plugin<Project> {
 
     @Override
