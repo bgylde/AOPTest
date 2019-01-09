@@ -26,11 +26,10 @@ public class CostClassVisitor extends ClassVisitor {
             @Override
             AnnotationVisitor visitAnnotation(String descs, boolean visible) {
                 // 过滤注解Cost.class
-                println("1. @@@@@@@@@@@@@")
                 if (Type.getDescriptor(Cost.class).equals(descs)) {
                     inject = true;
                 }
-                println("2. @@@@@@@@@@@@@")
+
                 return super.visitAnnotation(descs, visible)
             }
 
@@ -44,21 +43,6 @@ public class CostClassVisitor extends ClassVisitor {
                     mv.visitLdcInsn(name);
                     mv.visitMethodInsn(INVOKESTATIC, "java/lang/System", "nanoTime", "()J", false);
                     mv.visitMethodInsn(INVOKESTATIC, "com/sohu/agent/TimeCache", "setStartTime", "(Ljava/lang/String;J)V", false);
-
-                    // todo MethodEnter
-//                    println('1. @@@@@@@@@@@@@@@@@@@@@ ')
-//                    mv.visitFieldInsn(Opcodes.GETSTATIC, "java/lang/System", "out", "Ljava/io/PrintStream;");
-//                    println('2. @@@@@@@@@@@@@@@@@@@@@')
-//                    mv.visitLdcInsn("========start=========");
-//                    println('3. @@@@@@@@@@@@@@@@@@@@@')
-//                    mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL, "java/io/PrintStream", "println", "(Ljava/lang/String;)V", false);
-//                    println('4. @@@@@@@@@@@@@@@@@@@@@')
-//                    mv.visitLdcInsn(name);
-//                    println('5. @@@@@@@@@@@@@@@@@@@@@')
-//                    mv.visitMethodInsn(Opcodes.INVOKESTATIC, "java/lang/System", "nanoTime", "()J", false);
-//                    println('6. @@@@@@@@@@@@@@@@@@@@@')
-//                    mv.visitMethodInsn(Opcodes.INVOKESTATIC, "com/sohu/groovytest/TimeCache", "setStartTime", "(Ljava/lang/String;J)V", false);
-//                    println('7. @@@@@@@@@@@@@@@@@@@@@')
                 }
                 super.onMethodEnter()
             }
@@ -78,18 +62,6 @@ public class CostClassVisitor extends ClassVisitor {
                     mv.visitFieldInsn(GETSTATIC, "java/lang/System", "out", "Ljava/io/PrintStream;");
                     mv.visitLdcInsn("========end=========");
                     mv.visitMethodInsn(INVOKEVIRTUAL, "java/io/PrintStream", "println", "(Ljava/lang/String;)V", false);
-
-                    // todo MethodExit
-//                    mv.visitLdcInsn(name);
-//                    mv.visitMethodInsn(Opcodes.INVOKESTATIC, "java/lang/System", "nanoTime", "()J", false);
-//                    mv.visitMethodInsn(Opcodes.INVOKESTATIC, "main/java/com/sohu/groovytest/TimeCache", "setEndTime", "(Ljava/lang/String;J)V", false);
-//                    mv.visitFieldInsn(Opcodes.GETSTATIC, "java/lang/System", "out", "Ljava/io/PrintStream;");
-//                    mv.visitLdcInsn(name);
-//                    mv.visitMethodInsn(Opcodes.INVOKESTATIC, "com/sohu/groovytest/TimeCache", "getCostTime", "(Ljava/lang/String;)Ljava/lang/String;", false);
-//                    mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL, "java/io/PrintStream", "println", "(Ljava/lang/String;)V", false);
-//                    mv.visitFieldInsn(Opcodes.GETSTATIC, "java/lang/System", "out", "Ljava/io/PrintStream;");
-//                    mv.visitLdcInsn("========end=========");
-//                    mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL, "java/io/PrintStream", "println", "(Ljava/lang/String;)V", false);
                 }
                 super.onMethodExit(opcode)
             }
