@@ -1,0 +1,31 @@
+apply plugin: 'groovy'
+apply plugin: 'maven'
+
+dependencies {
+    implementation gradleApi()
+    implementation localGroovy()
+    implementation 'com.android.tools.build:gradle:3.1.4'
+    implementation 'com.android.tools.build:gradle-api:3.1.4'
+    implementation 'commons-io:commons-io:2.6'
+    implementation 'commons-codec:commons-codec:1.10'
+    //noinspection GradleDependency
+    implementation 'org.ow2.asm:asm:5.1'
+    //noinspection GradleDependency
+    implementation 'org.ow2.asm:asm-util:5.1'
+    //noinspection GradleDependency
+    implementation 'org.ow2.asm:asm-commons:5.1'
+
+    implementation 'com.sohu.transform:base-transform:1.0-SNAPSHOT'
+}
+
+group = 'com.plugin.timing'
+version = '1.0-SNAPSHOT'
+def localRepoUrl = '../repo'
+
+uploadArchives {
+    repositories {
+        mavenDeployer {
+            repository(url: uri(localRepoUrl))
+        }
+    }
+}

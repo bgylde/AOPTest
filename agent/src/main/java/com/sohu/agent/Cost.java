@@ -1,4 +1,4 @@
-package com.sohu.groovytest;
+package com.sohu.agent;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Target;
