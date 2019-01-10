@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.util.Log;
 
 import com.sohu.agent.Cost;
-import com.sohu.agent.TimeCache;
 
 public class MainActivity extends Activity {
 

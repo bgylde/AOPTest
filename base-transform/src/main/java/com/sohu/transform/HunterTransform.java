@@ -48,7 +48,7 @@ public class HunterTransform extends Transform {
     private WaitableExecutor waitableExecutor;
     private boolean emptyRun = false;
 
-    public HunterTransform(Project project){
+    public HunterTransform(Project project) {
         this.project = project;
         this.logger = project.getLogger();
         this.waitableExecutor = WaitableExecutor.useGlobalSharedThreadPool();
@@ -173,6 +173,7 @@ public class HunterTransform extends Transform {
         }
 
         waitableExecutor.waitForTasksWithQuickFail(true);
+        urlClassLoader.close();     // 关闭类加载器
         long costTime = System.currentTimeMillis() - startTime;
         logger.warn((getName() + " costed " + costTime + "ms"));
     }

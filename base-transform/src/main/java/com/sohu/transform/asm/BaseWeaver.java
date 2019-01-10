@@ -81,10 +81,21 @@ public abstract class BaseWeaver implements IWeaver{
         }
     }
 
+    /**
+     * 设置类加载器
+     * @param classLoader 类加载器
+     */
     public final void setClassLoader(ClassLoader classLoader) {
         this.classLoader = classLoader;
     }
 
+    /**
+     * 遍历过程，实现注入，注入过程在accept中
+     * @param inputStream 需要注入的class的字节码
+     * @return 注入以后的结果字节码
+     * @throws IOException
+     * ClassReader.SKIP_DEBUG: 扫描中略过行号相关内容
+     */
     @Override
     public byte[] weaveSingleClassToByteArray(InputStream inputStream) throws IOException {
         ClassReader classReader = new ClassReader(inputStream);
@@ -94,18 +105,20 @@ public abstract class BaseWeaver implements IWeaver{
         return classWriter.toByteArray();
     }
 
-    public void setExtension(Object extension) {
-
-    }
+    // 设置配置类
+    public abstract void setExtension(Object extension);
 
     protected ClassVisitor wrapClassWriter(ClassWriter classWriter) {
         return classWriter;
     }
 
+    /**
+     * 过滤基础的类名，比如R.class、BuildConfig.class、R&...等类，这些类直接略过不进行代码注入
+     * @param fullQualifiedClassName 类名
+     * @return 是否进行代码注入 true-注入 false-不注入
+     */
     @Override
     public boolean isWeavableClass(String fullQualifiedClassName){
-        //System.out.println("@@@@@@@@@@@@@@@ fullQualifiedClassName: " + fullQualifiedClassName);
         return fullQualifiedClassName.endsWith(".class") && !fullQualifiedClassName.contains("R$") && !fullQualifiedClassName.contains("R.class") && !fullQualifiedClassName.contains("BuildConfig.class");
     }
-
 }
