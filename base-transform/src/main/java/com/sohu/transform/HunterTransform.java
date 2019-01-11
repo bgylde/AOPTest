@@ -12,6 +12,7 @@ import com.android.build.api.transform.TransformInput;
 import com.android.build.api.transform.TransformOutputProvider;
 import com.android.build.gradle.internal.pipeline.TransformManager;
 import com.android.ide.common.internal.WaitableExecutor;
+
 import com.google.common.io.Files;
 import com.sohu.transform.asm.BaseWeaver;
 import com.sohu.transform.asm.ClassLoaderHelper;
@@ -27,6 +28,8 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.Callable;
+
 /**
  * Created by Quinn on 26/02/2017.
  * Transform to modify bytecode
@@ -73,7 +76,6 @@ public class HunterTransform extends Transform {
     public boolean isIncremental() {
         return true;
     }
-
 
     @SuppressWarnings("deprecation")
     @Override
@@ -180,7 +182,11 @@ public class HunterTransform extends Transform {
 
     private void transformSingleFile(final File inputFile, final File outputFile, final String srcBaseDir) {
         waitableExecutor.execute(() -> {
-            bytecodeWeaver.weaveSingleClassToFile(inputFile, outputFile, srcBaseDir);
+            try {
+                bytecodeWeaver.weaveSingleClassToFile(inputFile, outputFile, srcBaseDir);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
             return null;
         });
     }
@@ -205,13 +211,23 @@ public class HunterTransform extends Transform {
     }
 
     private void transformJar(final File srcJar, final File destJar, Status status) {
-        waitableExecutor.execute(() -> {
-            if(emptyRun) {
-                FileUtils.copyFile(srcJar, destJar);
+        waitableExecutor.execute(new Callable<Object>() {
+            @Override
+            public Object call() throws Exception {
+                if (emptyRun) {
+                    FileUtils.copyFile(srcJar, destJar);
+                    return null;
+                }
+
+                // 导入项目时读取这个文件出现了ArrayIndexOutOfBoundsException错误导致编译失败
+                // 暂时无法定位问题，先略过这个jar文件，后续再解决
+                if ("Msc.jar".equals(srcJar.getName())) {
+                    return null;
+                }
+
+                bytecodeWeaver.weaveJar(srcJar, destJar);
                 return null;
             }
-            bytecodeWeaver.weaveJar(srcJar, destJar);
-            return null;
         });
     }
 

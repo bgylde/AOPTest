@@ -1,4 +1,4 @@
-package com.sohu.agent;
+package com.sohu.agent.timing;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Target;

@@ -1,1 +1,1 @@
-include ':app', ':sohuGroovy', ':agent', ':base-transform', ':timing-plugin'
+include ':app', ':agent', ':base-transform', ':timing-plugin', ':okhttp-plugin'

@@ -30,7 +30,7 @@ public final class TimingMethodAdapter extends LocalVariablesSorter implements O
     public AnnotationVisitor visitAnnotation(String desc, boolean visible) {
         // 根据注解过滤，只对有Cost注解的方法注入代码
         // Type.getDescriptor(Cost.class).equals(descs)也可以过滤，但是这样会需要应用Cost类，比较麻烦，此处直接比较字符串
-        if (desc.equals("Lcom/sohu/agent/Cost;")) {
+        if (desc.equals("Lcom/sohu/agent/timing/Cost;")) {
             inject = true;
         }
 
@@ -47,7 +47,7 @@ public final class TimingMethodAdapter extends LocalVariablesSorter implements O
             System.out.println("----------------------- START CHANGE METHOD " + methodName + " -----------------------");
             mv.visitLdcInsn(methodName);
             mv.visitMethodInsn(INVOKESTATIC, "java/lang/System", "nanoTime", "()J", false);
-            mv.visitMethodInsn(INVOKESTATIC, "com/sohu/agent/TimeCache", "setStartTime", "(Ljava/lang/String;J)V", false);
+            mv.visitMethodInsn(INVOKESTATIC, "com/sohu/agent/timing/TimeCache", "setStartTime", "(Ljava/lang/String;J)V", false);
         }
     }
 
@@ -75,7 +75,7 @@ public final class TimingMethodAdapter extends LocalVariablesSorter implements O
         if (inject && ((opcode >= IRETURN && opcode <= RETURN) || opcode == ATHROW)) {
             mv.visitLdcInsn(methodName);
             mv.visitMethodInsn(INVOKESTATIC, "java/lang/System", "nanoTime", "()J", false);
-            mv.visitMethodInsn(INVOKESTATIC, "com/sohu/agent/TimeCache", "setEndTime", "(Ljava/lang/String;J)V", false);
+            mv.visitMethodInsn(INVOKESTATIC, "com/sohu/agent/timing/TimeCache", "setEndTime", "(Ljava/lang/String;J)V", false);
             System.out.println("----------------------- END CHANGE METHOD " + methodName + " -----------------------");
             inject = false;     // 经过opcode过滤可以保证这个方法只被调用一次，此处不加也可以~
         }

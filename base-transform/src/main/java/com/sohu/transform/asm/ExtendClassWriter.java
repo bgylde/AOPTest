@@ -30,20 +30,21 @@ public class ExtendClassWriter extends ClassWriter {
      */
     @Override
     protected String getCommonSuperClass(final String type1, final String type2) {
+        System.out.println("00000. ###########################");
         if (type1 == null || type1.equals(OBJECT) || type2 == null || type2.equals(OBJECT)) {
             return OBJECT;
         }
-
+        System.out.println("0000. ###########################");
         if (type1.equals(type2)) {
             return type1;
         }
-
+        System.out.println("000. ###########################");
         ClassReader type1ClassReader = getClassReader(type1);
         ClassReader type2ClassReader = getClassReader(type2);
         if (type1ClassReader == null || type2ClassReader == null) {
             return OBJECT;
         }
-
+        System.out.println("00. ###########################");
         if (isInterface(type1ClassReader)) {
             String interfaceName = type1;
             if (isImplements(interfaceName, type2ClassReader)) {
@@ -57,7 +58,7 @@ public class ExtendClassWriter extends ClassWriter {
             }
             return OBJECT;
         }
-
+        System.out.println("0. ###########################");
         if (isInterface(type2ClassReader)) {
             String interfaceName = type2;
             if (isImplements(interfaceName, type1ClassReader)) {
@@ -66,20 +67,22 @@ public class ExtendClassWriter extends ClassWriter {
             return OBJECT;
         }
 
+        System.out.println("1. ###########################");
         final Set<String> superClassNames = new HashSet<String>();
         superClassNames.add(type1);
         superClassNames.add(type2);
-
+        System.out.println("2. ###########################");
         String type1SuperClassName = type1ClassReader.getSuperName();
         if (!superClassNames.add(type1SuperClassName)) {
             return type1SuperClassName;
         }
-
+        System.out.println("3. ###########################");
         String type2SuperClassName = type2ClassReader.getSuperName();
         if (!superClassNames.add(type2SuperClassName)) {
             return type2SuperClassName;
         }
 
+        System.out.println("4. ###########################");
         while (type1SuperClassName != null || type2SuperClassName != null) {
             if (type1SuperClassName != null) {
                 type1SuperClassName = getSuperClassName(type1SuperClassName);
@@ -99,7 +102,7 @@ public class ExtendClassWriter extends ClassWriter {
                 }
             }
         }
-
+        System.out.println("5. ###########################");
         return OBJECT;
     }
 

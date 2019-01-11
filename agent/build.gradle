@@ -26,4 +26,20 @@ android {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
+
+    implementation "com.squareup.okhttp3:okhttp:${OKHTTP_VERSION}"
+}
+
+apply plugin: 'maven'
+
+group = 'com.plugin.agent'
+version = '1.0-SNAPSHOT'
+def localRepoUrl = '../repo'
+
+uploadArchives {
+    repositories {
+        mavenDeployer {
+            repository(url: uri(localRepoUrl))
+        }
+    }
 }

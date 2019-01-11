@@ -108,9 +108,7 @@ public abstract class BaseWeaver implements IWeaver{
     // 设置配置类
     public abstract void setExtension(Object extension);
 
-    protected ClassVisitor wrapClassWriter(ClassWriter classWriter) {
-        return classWriter;
-    }
+    protected abstract ClassVisitor wrapClassWriter(ClassWriter classWriter);
 
     /**
      * 过滤基础的类名，比如R.class、BuildConfig.class、R&...等类，这些类直接略过不进行代码注入

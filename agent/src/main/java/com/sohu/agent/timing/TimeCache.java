@@ -1,6 +1,6 @@
-package com.sohu.agent;
+package com.sohu.agent.timing;
 
-import android.util.Log;
+import com.sohu.agent.utils.LogUtils;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -21,7 +21,7 @@ public class TimeCache {
         if (result != null) {
             timeCache.remove(methodName);
             long startTime = result;
-            Log.d("CostTime", methodName + " cost time: " + String.valueOf(time - startTime) + " ns");
+            LogUtils.d("CostTime", methodName + " cost time: " + String.valueOf(time - startTime) + " ns");
         }
     }
 }
