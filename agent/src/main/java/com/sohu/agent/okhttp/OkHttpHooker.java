@@ -3,16 +3,11 @@ package com.sohu.agent.okhttp;
 import com.sohu.agent.utils.LogUtils;
 
 import java.io.IOException;
-import java.net.InetAddress;
-import java.net.UnknownHostException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import okhttp3.Connection;
-import okhttp3.Dns;
 import okhttp3.Headers;
-import okhttp3.HttpUrl;
 import okhttp3.Interceptor;
 import okhttp3.Request;
 import okhttp3.RequestBody;
@@ -28,8 +23,6 @@ public class OkHttpHooker {
 
     private static OkHttpHooker instance = null;
 
-    //private OkHttpClient client = new OkHttpClient();
-    private Dns okhttpDns = null;
     private List<Interceptor> globalInterceptors = null;
     private List<Interceptor> globalNetworkInterceptors = null;
 
@@ -47,18 +40,6 @@ public class OkHttpHooker {
         }
 
         return instance;
-    }
-
-    public Dns getOkhttpDns() {
-        if (okhttpDns == null) {
-            synchronized (this) {
-                if (okhttpDns == null) {
-                    okhttpDns = getDefaultDns();
-                }
-            }
-        }
-
-        return okhttpDns;
     }
 
     public List<Interceptor> getGlobalInterceptors() {
@@ -103,27 +84,6 @@ public class OkHttpHooker {
         }
 
         globalNetworkInterceptors.add(interceptor);
-    }
-
-    private Dns getDefaultDns() {
-        Dns dns = new Dns() {
-            @Override
-            public List<InetAddress> lookup(String hostname) throws UnknownHostException {
-                if (hostname == null) throw new UnknownHostException("hostname == null");
-                long startTime = System.currentTimeMillis();
-                InetAddress[] addresses = InetAddress.getAllByName(hostname);
-                LogUtils.d(TAG, "Parse Dns cost time: " + (System.currentTimeMillis() - startTime) + " ms");
-                for (InetAddress inetAddress : addresses) {
-                    LogUtils.d(TAG, "getHostName: " + inetAddress.getHostName() +       // 主机别名
-                            " getHostAddress: " + inetAddress.getHostAddress());                 // 主机ip
-                            // " getCanonicalHostName: " + inetAddress.getCanonicalHostName());     // 主机名
-                }
-
-                return Arrays.asList(addresses);
-            }
-        };
-
-        return dns;
     }
 
     private void initIntercepters() {

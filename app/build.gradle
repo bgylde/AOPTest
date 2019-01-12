@@ -1,6 +1,7 @@
 apply plugin: 'com.android.application'
 apply plugin: 'plugin-timing'
 apply plugin: 'plugin-okhttp'
+apply plugin: 'plugin-debug'
 
 android {
     compileSdkVersion 28
@@ -34,8 +35,8 @@ dependencies {
 
     implementation "com.squareup.okhttp3:logging-interceptor:${OKHTTP_VERSION}"
 
-    implementation "com.plugin.agent:agent:1.0-SNAPSHOT"
-    //implementation project(':agent')    // 插入方法的实现model
+    //implementation "com.plugin.agent:agent:1.0-SNAPSHOT"
+    implementation project(':agent')    // 插入方法的实现model
 }
 
 timingHunterExt {

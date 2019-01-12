@@ -34,12 +34,12 @@ public class OkhttpMethodAdapter extends LocalVariablesSorter implements Opcodes
                 //todo 添加okhttp的工厂类EventListenerFactory, 由于OKHTTP在3.11.0以上才支持EventListenerFactory，这里先不加
             }
 
-            // DNS
-            logger.info("##### Add DNS to okhttp #####");
-            mv.visitVarInsn(ALOAD, 0);
-            mv.visitMethodInsn(INVOKESTATIC, "com/sohu/agent/okhttp/OkHttpHooker", "getInstance", "()Lcom/sohu/agent/okhttp/OkHttpHooker;", false);
-            mv.visitMethodInsn(INVOKEVIRTUAL, "com/sohu/agent/okhttp/OkHttpHooker", "getOkhttpDns", "()Lokhttp3/Dns;", false);
-            mv.visitFieldInsn(PUTFIELD, "okhttp3/OkHttpClient$Builder", "dns", "Lokhttp3/Dns;");
+            // DNS 此处不再添加dns，防止对应用添加的dns覆盖，在Debug插件中对DNS的构造函数做字节插入做统计
+            // logger.info("##### Add DNS to okhttp #####");
+            // mv.visitVarInsn(ALOAD, 0);
+            // mv.visitMethodInsn(INVOKESTATIC, "com/sohu/agent/okhttp/OkHttpHooker", "getInstance", "()Lcom/sohu/agent/okhttp/OkHttpHooker;", false);
+            // mv.visitMethodInsn(INVOKEVIRTUAL, "com/sohu/agent/okhttp/OkHttpHooker", "getOkhttpDns", "()Lokhttp3/Dns;", false);
+            // mv.visitFieldInsn(PUTFIELD, "okhttp3/OkHttpClient$Builder", "dns", "Lokhttp3/Dns;");
 
             // Interceptor
             logger.info("##### Add Interceptor to okhttp #####");

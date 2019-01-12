@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
+import com.transform.demo.debug.DebugTest;
 import com.transform.demo.okhttp.OkHttpTest;
 import com.transform.demo.timing.TestTiming;
 
@@ -21,6 +22,9 @@ public class MainActivity extends Activity {
 
         initView();
         initListener();
+
+        //DebugTest.setValue("test", 63728L, 23, false);
+        //DebugTest.testVoid();
     }
 
     private void initView() {
@@ -42,7 +46,8 @@ public class MainActivity extends Activity {
                     OkHttpTest.okHttpTest();
                     break;
                 case R.id.test_timing:
-                    TestTiming.sleepTimingTest(3000);
+                    //TestTiming.sleepTimingTest(3000);
+                    DebugTest.setValue("test", 63728L, 23, false);
                     break;
             }
         }

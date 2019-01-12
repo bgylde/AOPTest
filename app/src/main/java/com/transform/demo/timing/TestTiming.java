@@ -10,6 +10,7 @@ public class TestTiming {
 
     private static final String TAG = "TestTiming";
 
+    @Cost
     public static void sleepTimingTest(long time) {
         Thread thread = new Thread(new Runnable() {
             @Override

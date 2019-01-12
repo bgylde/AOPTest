@@ -1,1 +1,1 @@
-include ':app', ':agent', ':base-transform', ':timing-plugin', ':okhttp-plugin'
+include ':app', ':agent', ':base-transform', ':timing-plugin', ':okhttp-plugin', ':debug-plugin'
