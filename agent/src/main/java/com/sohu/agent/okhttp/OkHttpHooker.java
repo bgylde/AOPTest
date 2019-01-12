@@ -3,7 +3,10 @@ package com.sohu.agent.okhttp;
 import com.sohu.agent.utils.LogUtils;
 
 import java.io.IOException;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import okhttp3.Connection;
@@ -25,6 +28,7 @@ public class OkHttpHooker {
 
     private static OkHttpHooker instance = null;
 
+    //private OkHttpClient client = new OkHttpClient();
     private Dns okhttpDns = null;
     private List<Interceptor> globalInterceptors = null;
     private List<Interceptor> globalNetworkInterceptors = null;
@@ -49,7 +53,7 @@ public class OkHttpHooker {
         if (okhttpDns == null) {
             synchronized (this) {
                 if (okhttpDns == null) {
-                    okhttpDns = Dns.SYSTEM;
+                    okhttpDns = getDefaultDns();
                 }
             }
         }
@@ -101,12 +105,34 @@ public class OkHttpHooker {
         globalNetworkInterceptors.add(interceptor);
     }
 
+    private Dns getDefaultDns() {
+        Dns dns = new Dns() {
+            @Override
+            public List<InetAddress> lookup(String hostname) throws UnknownHostException {
+                if (hostname == null) throw new UnknownHostException("hostname == null");
+                long startTime = System.currentTimeMillis();
+                InetAddress[] addresses = InetAddress.getAllByName(hostname);
+                LogUtils.d(TAG, "Parse Dns cost time: " + (System.currentTimeMillis() - startTime) + " ms");
+                for (InetAddress inetAddress : addresses) {
+                    LogUtils.d(TAG, "getHostName: " + inetAddress.getHostName() +       // 主机别名
+                            " getHostAddress: " + inetAddress.getHostAddress());                 // 主机ip
+                            // " getCanonicalHostName: " + inetAddress.getCanonicalHostName());     // 主机名
+                }
+
+                return Arrays.asList(addresses);
+            }
+        };
+
+        return dns;
+    }
+
     private void initIntercepters() {
         Interceptor globalInterceptor = new Interceptor() {
             @Override
             public Response intercept(Chain chain) throws IOException {
                 Request request = chain.request();
                 LogUtils.d(TAG, "Request url: " + request.url());
+                LogUtils.d(TAG, "Request host: " + request.url().host());
                 LogUtils.d(TAG, "Request method: " + request.method());
                 Headers requestHeards = request.headers();
                 for (int i = 0; i < requestHeards.size(); i++) {
@@ -118,6 +144,7 @@ public class OkHttpHooker {
                     LogUtils.d(TAG, "Request body length: " + body.contentLength());
                 }
                 Connection connection = chain.connection();
+                LogUtils.d(TAG, "Connection: " + connection);
                 if (connection != null) {
                     LogUtils.d(TAG, "protocol: " + connection.protocol());
                     LogUtils.d(TAG, "route: " + connection.route().toString());
@@ -129,6 +156,7 @@ public class OkHttpHooker {
                 Response response = chain.proceed(request);
                 LogUtils.d(TAG, "Net request end. Cost time: " + (System.currentTimeMillis() - start) + " ms");
 
+                LogUtils.d(TAG, "peerPrincipal: " + response.handshake().peerPrincipal());
                 Headers headers = response.headers();
                 for (int i = 0; i < headers.size(); i++) {
                     LogUtils.d(TAG, "Response header name:[" + headers.name(i) + "] value:[" + headers.value(i) + "]");

@@ -21,6 +21,7 @@ import java.util.zip.ZipOutputStream;
 
 /**
  * Created by quinn on 07/09/2018
+ * asm相关 参考 https://www.jianshu.com/p/abd1b1b8d3f3
  */
 public abstract class BaseWeaver implements IWeaver{
 
