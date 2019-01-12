@@ -9,12 +9,14 @@ import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.TypePath;
 
 import java.io.File;
+import java.util.Arrays;
 
 /**
  * Created by wangyan on 2019/1/11
  */
 public class OkhttpClassAdapter extends ClassVisitor {
 
+    private boolean enable = false;
     private String className;
 
     private boolean weaveEventListener;
@@ -28,12 +30,15 @@ public class OkhttpClassAdapter extends ClassVisitor {
     public void visit(int version, int access, String name, String signature, String superName, String[] interfaces) {
         super.visit(version, access, name, signature, superName, interfaces);
         this.className = name;
+        if ("okhttp3/OkHttpClient$Builder".equals(className) || Arrays.toString(interfaces).contains("okhttp3/Dns")) {
+            enable = true;
+        }
     }
 
     @Override
     public MethodVisitor visitMethod(int access, String name, String desc, String signature, String[] exceptions) {
         MethodVisitor mv = cv.visitMethod(access, name, desc, signature, exceptions);
-        if ("okhttp3/OkHttpClient$Builder".equals(className)) {
+        if (enable) {
             return mv == null ? null : new OkhttpMethodAdapter(className + File.separator + name, access, desc, mv, weaveEventListener);
         } else {
             return mv;

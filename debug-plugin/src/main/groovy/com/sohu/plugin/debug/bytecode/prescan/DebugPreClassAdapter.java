@@ -6,7 +6,6 @@ import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
 
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -29,7 +28,7 @@ public class DebugPreClassAdapter extends ClassVisitor {
     @Override
     public void visit(int version, int access, String name, String signature, String superName, String[] interfaces) {
         super.visit(version, access, name, signature, superName, interfaces);
-        if ("com/transform/demo/debug/DebugTest".equals(name) || Arrays.toString(interfaces).contains("okhttp3/Dns")) {
+        if ("com/transform/demo/debug/DebugTest".equals(name)) {
             classEnable = true;
         }
     }

@@ -31,9 +31,6 @@ public class DebugPreMethodAdapter extends MethodVisitor implements Opcodes {
         super(Opcodes.ASM5, mv);
         this.methodKey = methodKey;
         this.methodParametersMap = methodParametersMap;
-        if (methodKey.startsWith("lookup")) {
-            debugEnable = true;
-        }
     }
 
     @Override

@@ -15,12 +15,6 @@ import java.util.List;
  */
 public class DebugMethodAdapter extends LocalVariablesSorter implements Opcodes {
 
-    // 过滤是否是okhttp的dns的lookup方法，暂时okhttp的dns监控放在这边
-    private boolean dnsEnable = false;
-
-    // 记录dns的lookup函数开始的时间
-    private int dnsStartTimeIndex = -1;
-
     private List<Parameter> parameters;
 
     private String className;
@@ -40,18 +34,12 @@ public class DebugMethodAdapter extends LocalVariablesSorter implements Opcodes 
         this.parameters = parameters;
         this.methodName = name;
         this.methodDesc = desc;
-        if ("lookup".equals(methodName)) {
-            dnsEnable = true;
-        }
     }
 
     @Override
     public void visitCode() {
         super.visitCode();
         System.out.println("----------- START INJECT DEBUG INFO TO " + className + methodName + " -----------");
-        dnsStartTimeIndex = newLocal(Type.LONG_TYPE);
-        mv.visitMethodInsn(INVOKESTATIC, "java/lang/System", "currentTimeMillis", "()J", false);
-        mv.visitVarInsn(LSTORE, dnsStartTimeIndex);
     }
 
     @Override
@@ -73,34 +61,18 @@ public class DebugMethodAdapter extends LocalVariablesSorter implements Opcodes 
                 mv.visitVarInsn(storeOpcode, resultTempValIndex);
             }
 
-            if (!dnsEnable) {
-                if (returnType != Type.VOID_TYPE || opcode == ATHROW) {
-                    int loadOpcode = Utils.getLoadOpcodeFromType(returnType);
-                    if (opcode == ATHROW) {
-                        loadOpcode = ALOAD;
-                    }
-
-                    mv.visitVarInsn(loadOpcode, resultTempValIndex);
-                    mv.visitMethodInsn(INVOKESTATIC, "com/sohu/agent/utils/LogUtils", "d", "(Ljava/lang/String;)V", false);
-                    mv.visitVarInsn(loadOpcode, resultTempValIndex);
-                } else {
-                    mv.visitLdcInsn("VOID");
-                    mv.visitMethodInsn(INVOKESTATIC, "com/sohu/agent/utils/LogUtils", "d", "(Ljava/lang/String;)V", false);
+            if (returnType != Type.VOID_TYPE || opcode == ATHROW) {
+                int loadOpcode = Utils.getLoadOpcodeFromType(returnType);
+                if (opcode == ATHROW) {
+                    loadOpcode = ALOAD;
                 }
-            } else { // 对DNS中的lookup插入字节码
-                if (returnType != Type.VOID_TYPE || opcode == ATHROW) {
-                    int loadOpcode = Utils.getLoadOpcodeFromType(returnType);
-                    if (opcode == ATHROW) {
-                        loadOpcode = ALOAD;
-                    }
 
-                    mv.visitVarInsn(loadOpcode, resultTempValIndex);
-                    mv.visitMethodInsn(INVOKESTATIC, "java/lang/System", "currentTimeMillis", "()J", false);
-                    mv.visitVarInsn(LLOAD, dnsStartTimeIndex);
-                    mv.visitInsn(LSUB);
-                    mv.visitMethodInsn(INVOKESTATIC, "com/sohu/agent/debug/OkHttpDnsUtils", "handleDnsList", "(Ljava/util/List;J)V", false);
-                    mv.visitVarInsn(loadOpcode, resultTempValIndex);
-                }
+                mv.visitVarInsn(loadOpcode, resultTempValIndex);
+                mv.visitMethodInsn(INVOKESTATIC, "com/sohu/agent/utils/LogUtils", "d", "(Ljava/lang/String;)V", false);
+                mv.visitVarInsn(loadOpcode, resultTempValIndex);
+            } else {
+                mv.visitLdcInsn("VOID");
+                mv.visitMethodInsn(INVOKESTATIC, "com/sohu/agent/utils/LogUtils", "d", "(Ljava/lang/String;)V", false);
             }
         }
 
