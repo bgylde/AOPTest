@@ -15,7 +15,7 @@ dependencies {
     //noinspection GradleDependency
     implementation 'org.ow2.asm:asm-commons:5.1'
 
-    implementation 'com.sohu.transform:base-transform:1.0-SNAPSHOT'
+    implementation 'com.bgylde.transform:base-transform:1.0-SNAPSHOT'
 }
 
 group = 'com.plugin.debug'

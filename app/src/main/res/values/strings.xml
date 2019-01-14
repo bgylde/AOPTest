@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">TransformTest</string>
+    <string name="test_timing">CostTimeTest</string>
+    <string name="test_okhttp">OkhttpTest</string>
 </resources>

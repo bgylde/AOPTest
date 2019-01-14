@@ -7,10 +7,10 @@
 * base-transform: 基础的transform实现，读取字节码并插入的实现model，本身与应用层没有联系；
 * timing-plugin: 基于base-trasnform实现函数计时，此处过滤Cost注解的函数  
 
-> agent和sohuGroovy没有引用关系，agent是sohuGroovy插入方法的实现；  
+> agent和插件没有引用关系，agent是插件插入方法的实现；
 
 ## 导入方法
-1. 在Project的build.gradle中添加maven地址，dependencies中添加classpath，导入sohuGroovy发布的包；  
+1. 在Project的build.gradle中添加maven地址，dependencies中添加classpath，导入插件发布的包；
 
 2. 在app的build.gradle中添加 
 ```

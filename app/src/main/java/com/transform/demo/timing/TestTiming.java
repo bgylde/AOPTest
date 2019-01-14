@@ -1,7 +1,8 @@
 package com.transform.demo.timing;
 
-import com.sohu.agent.timing.Cost;
-import com.sohu.agent.utils.LogUtils;
+
+import com.bgylde.agent.timing.Cost;
+import com.bgylde.agent.utils.LogUtils;
 
 /**
  * Created by wangyan on 2019/1/10

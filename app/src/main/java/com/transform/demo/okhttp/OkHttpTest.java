@@ -2,7 +2,7 @@ package com.transform.demo.okhttp;
 
 import android.support.annotation.NonNull;
 
-import com.sohu.agent.utils.LogUtils;
+import com.bgylde.agent.utils.LogUtils;
 
 import java.io.IOException;
 

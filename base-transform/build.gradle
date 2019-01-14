@@ -13,7 +13,7 @@ dependencies {
     implementation 'org.ow2.asm:asm-commons:5.1'
 }
 
-group = 'com.sohu.transform'
+group = 'com.bgylde.transform'
 version = '1.0-SNAPSHOT'
 def localRepoUrl = '../repo'
 

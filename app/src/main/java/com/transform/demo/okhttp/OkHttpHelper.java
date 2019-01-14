@@ -1,7 +1,6 @@
 package com.transform.demo.okhttp;
 
-import com.sohu.agent.okhttp.OkHttpHooker;
-import com.sohu.agent.utils.LogUtils;
+import com.bgylde.agent.utils.LogUtils;
 import com.transform.demo.utils.StringUtils;
 
 import org.json.JSONObject;

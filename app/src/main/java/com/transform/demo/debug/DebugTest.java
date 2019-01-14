@@ -1,7 +1,7 @@
 package com.transform.demo.debug;
 
-import com.sohu.agent.debug.Debug;
-import com.sohu.agent.utils.LogUtils;
+import com.bgylde.agent.debug.Debug;
+import com.bgylde.agent.utils.LogUtils;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;

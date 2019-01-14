@@ -1,5 +1,4 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
-//apply plugin: 'com.sohu.groovy'
 
 buildscript {
     
@@ -13,8 +12,6 @@ buildscript {
 
     dependencies {
         classpath 'com.android.tools.build:gradle:3.0.0'
-
-        // classpath 'com.sohu.groovy:sohuGroovy:1.0-SNAPSHOT'
 
         classpath 'com.plugin.timing:timing-plugin:1.0-SNAPSHOT'
         classpath 'com.plugin.okhttp:okhttp-plugin:1.0-SNAPSHOT'
