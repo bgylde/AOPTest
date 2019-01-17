@@ -222,6 +222,7 @@ public class HunterTransform extends Transform {
                 // 导入项目时读取这个文件出现了ArrayIndexOutOfBoundsException错误导致编译失败
                 // 暂时无法定位问题，先略过这个jar文件，后续再解决
                 if ("Msc.jar".equals(srcJar.getName())) {
+                    FileUtils.copyFile(srcJar, destJar);
                     return null;
                 }
 
